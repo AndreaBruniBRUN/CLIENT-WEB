@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dati in Streaming</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+
+    <style>
+        #grafico {
+            width: 100px; /* Larghezza fissa del canvas in pixel */
+            height: 50px; /* Altezza fissa del canvas in pixel */
+        }
+    </style>
+
+
+
+
+
+</head>
+
+<body>
+    <canvas id="grafico" width="100" height="50"></canvas>
+    <h1>Dati Ricevuti in Streaming:</h1>
+    <div>
+        <label for="x">X:</label>
+        <input type="text" id="x" readonly>
+    </div>
+    <div>
+        <label for="y">Y:</label>
+        <input type="text" id="y" readonly>
+    </div>
+    <div>
+        <label for="z">Z:</label>
+        <input type="text" id="z" readonly>
+    </div>
+
+    <script>
+        
+        
+        // Crea una connessione SSE al server
+        const eventSource = new EventSource('/stream-dati');
+
+        // Inizializza l'array per i dati del grafico
+        const datiGrafico = [];
+
+        // Ottieni il tempo iniziale
+        const tempoIniziale = moment();
+
+        // Ottieni il riferimento all'elemento canvas del grafico
+        const canvas = document.getElementById('grafico').getContext('2d');
+
+        // Inizializza il grafico utilizzando Chart.js
+        const grafico = new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'X',
+                    data: datiGrafico,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear', // Usa l'asse x come scala lineare
+                        position: 'bottom'
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
+        // Gestisci gli eventi SSE ricevuti dal server
+        eventSource.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+
+            // Calcola il tempo trascorso in millisecondi
+            const tempoTrascorso = moment().diff(tempoIniziale);
+
+            // Aggiungi il dato X all'array dei dati del grafico
+            datiGrafico.push({
+                x: tempoTrascorso,
+                y: data.z
+            });
+
+            // Aggiorna il grafico
+            grafico.update();
+
+            // Aggiorna i valori delle caselle con i dati ricevuti
+            document.getElementById('x').value = data.x;
+            document.getElementById('y').value = data.y;
+            document.getElementById('z').value = data.z;
+        };
+
+
+        // Gestisci eventuali errori nella connessione SSE
+        eventSource.onerror = function (error) {
+            console.error('Errore nella connessione SSE:', error);
+        };
+    </script>
+</body>
+
+</html>
