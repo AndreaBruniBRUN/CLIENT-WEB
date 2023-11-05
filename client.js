@@ -8,10 +8,10 @@
 //const indirizzoIPDelServer = 'https://andreabrunibrun.github.io/CLIENT-WEB';
 //client-web-odcm-fchm3x6mr-abrunis-projects.vercel.app
 
-//const indirizzoIPDelServer = 'https://client-web-odcm.vercel.app/';
-c//onst eventSource = new EventSource(`${indirizzoIPDelServer}`);
-const indirizzoIPDelServer = 'http://192.168.1.35:3000';
-const eventSource = new EventSource(`${indirizzoIPDelServer}/index.html`);
+const indirizzoIPDelServer = 'https://client-web-odcm.vercel.app/';
+const eventSource = new EventSource(`${indirizzoIPDelServer}`);
+//const indirizzoIPDelServer = 'http://192.168.1.35:3000';
+//const eventSource = new EventSource(`${indirizzoIPDelServer}/index.html`);
 // ...
 
 
