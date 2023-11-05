@@ -5,7 +5,7 @@
 //const indirizzoIPDelServer = 'https://andreabrunibrun.github.io/Testprova/CLIENT-WEB';
 //const eventSource = new EventSource(`${indirizzoIPDelServer}/stream-dati.html`);
 //https://www.dropbox.com/s/XXXXXXXXXXXX/stream-dati.html?dl=0
-const indirizzoIPDelServer = 'https://AndreaBruniBRUN.github.io/CLIENT-WEB/stream-dati.html';
+const indirizzoIPDelServer = 'https://andreabrunibrun.github.io/CLIENT-WEB/stream-dati.html';
 
 //test
 const eventSource = new EventSource(indirizzoIPDelServer);
