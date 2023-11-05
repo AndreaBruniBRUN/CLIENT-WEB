@@ -5,10 +5,14 @@
 //const indirizzoIPDelServer = 'https://andreabrunibrun.github.io/Testprova/CLIENT-WEB';
 //const eventSource = new EventSource(`${indirizzoIPDelServer}/stream-dati.html`);
 //https://www.dropbox.com/s/XXXXXXXXXXXX/stream-dati.html?dl=0
-const indirizzoIPDelServer = 'https://andreabrunibrun.github.io/CLIENT-WEB/stream-dati.html';
+//const indirizzoIPDelServer = 'https://andreabrunibrun.github.io/CLIENT-WEB';
+//client-web-odcm-fchm3x6mr-abrunis-projects.vercel.app
+const indirizzoIPDelServer = 'https://client-web-odcm-fchm3x6mr-abrunis-projects.vercel.app/';
+const eventSource = new EventSource(`${indirizzoIPDelServer}stream-dati.html`);
+
 
 //test
-const eventSource = new EventSource(indirizzoIPDelServer);
+//const eventSource = new EventSource(indirizzoIPDelServer);
 // ... resto del tuo codice ...
 
 //const eventSource = new EventSource('/stream-dati');
