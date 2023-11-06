@@ -18,7 +18,7 @@
 //const eventSource = new EventSource(`${indirizzoIPDelServer}/index.html`);
 // ...
 
-
+//
 //test
 //const eventSource = new EventSource(indirizzoIPDelServer);
 // ... resto del tuo codice ...
