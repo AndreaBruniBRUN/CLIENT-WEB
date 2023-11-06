@@ -10,8 +10,8 @@
 
 c//onst indirizzoIPDelServer = 'https://client-web-odcm.vercel.app';
 //const eventSource = new EventSource(`${indirizzoIPDelServer}/index`);
-const indirizzoIPDelServer = 'http://192.168.1.35:3000';
-const eventSource = new EventSource(`${indirizzoIPDelServer}/index`);
+//const indirizzoIPDelServer = 'http://192.168.1.35:3000';
+//const eventSource = new EventSource(`${indirizzoIPDelServer}/index`);
 
 //const indirizzoIPDelServer = 'http://192.168.1.35:3000';
 //const eventSource = new EventSource(`${indirizzoIPDelServer}/index.html`);
