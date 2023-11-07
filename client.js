@@ -1,27 +1,6 @@
-//const indirizzoIPDelServer = 'ANDBRU-NBT'; // Indirizzo IP o nome del server versione PC
-//const eventSource = new EventSource(`http://${indirizzoIPDelServer}:3000/stream-dati.html`);  //versione PC
-//const indirizzoIPDelServer = 'https://www.dropbox.com/scl/fi/9ighagpt4fxrwmn9n7p7k/stream-dati.html?rlkey=wf2keoyl5olth6qkyzmusbi51&dl=0';
-//const indirizzoIPDelServer = 'https://andreabrunibrun.github.io/Testprova/CLIENT-WEB/stream-dati.html';
-//const indirizzoIPDelServer = 'https://andreabrunibrun.github.io/Testprova/CLIENT-WEB';
-//const eventSource = new EventSource(`${indirizzoIPDelServer}/stream-dati.html`);
-//https://www.dropbox.com/s/XXXXXXXXXXXX/stream-dati.html?dl=0
-//const indirizzoIPDelServer = 'https://andreabrunibrun.github.io/CLIENT-WEB';
-//client-web-odcm-fchm3x6mr-abrunis-projects.vercel.app
+//const indirizzoIPDelServer = 'ANDBRU-NBT'; // Indirizzo IP o nome del server
+//const eventSource = new EventSource(`http://${indirizzoIPDelServer}:3000/stream-dati.html`);
 
-//const indirizzoIPDelServer = 'https://client-web-odcm.vercel.app';
-//const eventSource = new EventSource(`${indirizzoIPDelServer}/index`);
-//const indirizzoIPDelServer = 'http://192.168.1.35:3000';
-//const eventSource = new EventSource(`${indirizzoIPDelServer}/index`);
-//const eventSource = new EventSource('/index.html');
-
-//const indirizzoIPDelServer = 'http://192.168.1.35:3000';
-//const eventSource = new EventSource(`${indirizzoIPDelServer}/index.html`);
-// ...
-
-//
-//test
-//const eventSource = new EventSource(indirizzoIPDelServer);
-// ... resto del tuo codice ...
 
 //const eventSource = new EventSource('/stream-dati');
 
