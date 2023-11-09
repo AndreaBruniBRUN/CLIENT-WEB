@@ -49,7 +49,8 @@
 
         //const indirizzoIPDelServer = '172.18.81.177';  
         //const eventSource = new EventSource(`https://${indirizzoIPDelServer}:44443/index`); 
-        const eventSource = new EventSource(`https://client-web-odcm.vercel.app`);
+        //const eventSource = new EventSource(`https://client-web-odcm.vercel.app`);  noooo!!!!
+        const eventSource = new EventSource('/index'); // Connessione SSE
         // Inizializza l'array per i dati del grafico
         const datiGrafico = [];
 
