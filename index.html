@@ -56,7 +56,7 @@
             data: datiGrafico,  // Usa i tuoi dati
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.5)',
-            pointRadius: 5,  // Dimensione dei punti
+            pointRadius: 1,  // Dimensione dei punti
             pointHoverRadius: 8,  // Dimensione dei punti durante il passaggio del mouse
         }]
     },
@@ -74,7 +74,7 @@
 });
 
         // Dimensione massima dell'array dei dati del grafico
-        const maxSize = 10;
+        const maxSize = 100;
 
         // Gestisci gli eventi SSE ricevuti dal server
         eventSource.onmessage = function (event) {
