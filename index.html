@@ -50,7 +50,7 @@
             data: {
                 datasets: [{
                     label: 'Dati',
-                    data: datiZ,
+                    data: [],
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                     pointRadius: 1,
@@ -94,8 +94,12 @@
                     datiZ.pop(); // Rimuovi il dato più vecchio
                 }
 
-                // Aggiorna il grafico
-                grafico.update();
+                // Aggiorna il grafico solo quando ci sono almeno due dati Z
+                if (datiZ.length >= 2) {
+                    // Inverti l'ordine dell'array prima di aggiornare il grafico
+                    grafico.data.datasets[0].data = datiZ.slice().reverse();
+                    grafico.update();
+                }
             }
         };
 
@@ -107,4 +111,3 @@
 </body>
 
 </html>
-
