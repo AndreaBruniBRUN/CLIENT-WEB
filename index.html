@@ -49,34 +49,32 @@
 
         // Inizializza il grafico utilizzando Chart.js
         const grafico = new Chart(canvas, {
-            type: 'scatter',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'X',
-                    data: datiGrafico,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1,
-                    fill: false,
-                    pointRadius: 0,
-                    showLine: true,
-                }]
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'Dati',
+            data: datiGrafico,  // Usa i tuoi dati
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            pointRadius: 5,  // Dimensione dei punti
+            pointHoverRadius: 8,  // Dimensione dei punti durante il passaggio del mouse
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                type: 'linear',
+                position: 'bottom'
             },
-            options: {
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom'
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+            y: {
+                beginAtZero: true
             }
-        });
+        }
+    }
+});
 
         // Dimensione massima dell'array dei dati del grafico
-        const maxSize = 100;
+        const maxSize = 10;
 
         // Gestisci gli eventi SSE ricevuti dal server
         eventSource.onmessage = function (event) {
