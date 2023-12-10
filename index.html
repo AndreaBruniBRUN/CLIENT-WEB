@@ -95,11 +95,11 @@
                 }
 
                 // Aggiorna il grafico solo quando ci sono almeno due dati Z
-                if (datiZ.length >= 1) {
+                //if (datiZ.length >= 1) {
                     // Inverti l'ordine dell'array prima di aggiornare il grafico
                     grafico.data.datasets[0].data = datiZ.slice().reverse();
                     grafico.update();
-                }
+                //}
             }
         };
 
