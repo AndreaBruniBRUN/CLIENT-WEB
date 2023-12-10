@@ -54,8 +54,12 @@
                     data: datiGrafico,  // Usa i tuoi dati
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                    pointRadius: 1,  // Dimensione dei punti
-                    pointHoverRadius: 1,  // Dimensione dei punti durante il passaggio del mouse
+                    pointRadius: 3,  // Dimensione dei punti
+                    pointHoverRadius: 3,  // Dimensione dei punti durante il passaggio del mouse
+                    pointHitRadius: 5,  // Distanza dal punto per il rilevamento del passaggio del mouse
+                    pointBackgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    pointBorderColor: 'rgba(75, 192, 192, 1)',
+                    pointStyle: 'circle',  // Puoi cambiare questo valore in 'triangle', 'rect', ecc.
                 }]
             },
             options: {
@@ -109,4 +113,5 @@
 </body>
 
 </html>
+
 
