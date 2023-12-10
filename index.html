@@ -11,8 +11,8 @@
 
     <style>
         #grafico {
-            width: 100%;
-            height: 300px;
+            width: 100%; /* Larghezza dinamica del canvas */
+            height: 300px; /* Altezza fissa del canvas in pixel */
         }
     </style>
 </head>
@@ -34,22 +34,32 @@
     </div>
 
     <script>
-        const indirizzoIPDelServer = '192.168.1.12';
+        // Crea una connessione SSE al server
+        const indirizzoIPDelServer = '82.49.254.205';
         const eventSource = new EventSource(`https://${indirizzoIPDelServer}:443/index`);
+
+        // Inizializza l'array per i dati del grafico
         const datiGrafico = [];
-        const tempoIniziale = moment();
+        let indiceTemporale = 0;
+
+        // Ottieni il riferimento all'elemento canvas del grafico
         const canvas = document.getElementById('grafico').getContext('2d');
 
+        // Inizializza il grafico utilizzando Chart.js
         const grafico = new Chart(canvas, {
             type: 'scatter',
             data: {
                 datasets: [{
                     label: 'Dati',
-                    data: datiGrafico,
+                    data: datiGrafico,  // Usa i tuoi dati
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                    pointRadius: 1,
-                    pointHoverRadius: 8,
+                    pointRadius: 3,  // Dimensione dei punti
+                    pointHoverRadius: 3,  // Dimensione dei punti durante il passaggio del mouse
+                    pointHitRadius: 5,  // Distanza dal punto per il rilevamento del passaggio del mouse
+                    pointBackgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    pointBorderColor: 'rgba(75, 192, 192, 1)',
+                    pointStyle: 'circle',  // Puoi cambiare questo valore in 'triangle', 'rect', ecc.
                 }]
             },
             options: {
@@ -65,28 +75,37 @@
             }
         });
 
+        // Dimensione massima dell'array dei dati del grafico
         const maxSize = 100;
 
+        // Gestisci gli eventi SSE ricevuti dal server
         eventSource.onmessage = function (event) {
             const data = JSON.parse(event.data);
 
-            const tempoTrascorso = moment().diff(tempoIniziale);
+            // Aggiungi il dato X all'array dei dati del grafico
+            datiGrafico.unshift({
+                x: indiceTemporale,
+                y: data.z
+            });
 
-            // Aggiungi i dati accumulati all'array dei dati del grafico
-            datiGrafico.push(...data);
+            // Incrementa l'indice temporale
+            indiceTemporale++;
 
             // Limita la dimensione dell'array
             if (datiGrafico.length > maxSize) {
-                datiGrafico.splice(0, datiGrafico.length - maxSize); // Rimuovi i dati più vecchi
+                datiGrafico.pop(); // Rimuovi il dato più vecchio
             }
 
+            // Aggiorna il grafico
             grafico.update();
 
-            document.getElementById('x').value = data[data.length - 1].x;
-            document.getElementById('y').value = data[data.length - 1].y;
-            document.getElementById('z').value = data[data.length - 1].z;
+            // Aggiorna i valori delle caselle con i dati ricevuti
+            document.getElementById('x').value = data.x;
+            document.getElementById('y').value = data.y;
+            document.getElementById('z').value = data.z;
         };
 
+        // Gestisci eventuali errori nella connessione SSE
         eventSource.onerror = function (error) {
             console.error('Errore nella connessione SSE:', error);
         };
