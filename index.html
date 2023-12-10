@@ -38,8 +38,9 @@
         const indirizzoIPDelServer = '82.49.254.205';
         const eventSource = new EventSource(`https://${indirizzoIPDelServer}:443/index`);
 
-        // Inizializza l'array per i dati del grafico
-        const datiGrafico = [];
+        // Inizializza gli array per i dati del grafico
+        const datiX = [];
+        const datiZ = [];
         let indiceTemporale = 0;
 
         // Ottieni il riferimento all'elemento canvas del grafico
@@ -51,7 +52,7 @@
             data: {
                 datasets: [{
                     label: 'Dati',
-                    data: datiGrafico,  // Usa i tuoi dati
+                    data: [],  // Inizialmente vuoto
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                     pointRadius: 3,  // Dimensione dei punti
@@ -75,15 +76,21 @@
             }
         });
 
-        // Dimensione massima dell'array dei dati del grafico
+        // Dimensione massima degli array dei dati del grafico
         const maxSize = 100;
 
         // Gestisci gli eventi SSE ricevuti dal server
         eventSource.onmessage = function (event) {
             const data = JSON.parse(event.data);
 
-            // Aggiungi il dato X all'array dei dati del grafico
-            datiGrafico.unshift({
+            // Aggiungi il dato X all'array dei dati X
+            datiX.unshift({
+                x: indiceTemporale,
+                y: data.x
+            });
+
+            // Aggiungi il dato Z all'array dei dati Z
+            datiZ.unshift({
                 x: indiceTemporale,
                 y: data.z
             });
@@ -91,13 +98,20 @@
             // Incrementa l'indice temporale
             indiceTemporale++;
 
-            // Limita la dimensione dell'array
-            if (datiGrafico.length > maxSize) {
-                datiGrafico.pop(); // Rimuovi il dato più vecchio
+            // Limita la dimensione degli array
+            if (datiX.length > maxSize) {
+                datiX.pop(); // Rimuovi il dato più vecchio
             }
 
-            // Aggiorna il grafico
-            grafico.update();
+            if (datiZ.length > maxSize) {
+                datiZ.pop(); // Rimuovi il dato più vecchio
+            }
+
+            // Aggiorna il grafico solo quando vengono ricevuti i dati Z
+            if (data.z !== undefined) {
+                grafico.data.datasets[0].data = datiZ;
+                grafico.update();
+            }
 
             // Aggiorna i valori delle caselle con i dati ricevuti
             document.getElementById('x').value = data.x;
@@ -113,3 +127,4 @@
 </body>
 
 </html>
+
