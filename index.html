@@ -34,11 +34,12 @@
     </div>
 
     <script>
+        // Crea una connessione SSE al server
         const indirizzoIPDelServer = '82.49.254.205';
         const eventSource = new EventSource(`https://${indirizzoIPDelServer}:443/index`);
 
         // Inizializza l'array per i dati del grafico
-        const datiZ = [];
+        const datiGrafico = [];
         let indiceTemporale = 0;
 
         // Ottieni il riferimento all'elemento canvas del grafico
@@ -46,19 +47,19 @@
 
         // Inizializza il grafico utilizzando Chart.js
         const grafico = new Chart(canvas, {
-            type: 'line',
+            type: 'scatter',
             data: {
                 datasets: [{
                     label: 'Dati',
-                    data: datiZ,
+                    data: datiGrafico,  // Usa i tuoi dati
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                    pointRadius: 1,
-                    pointHoverRadius: 1,
-                    pointHitRadius: 1,
+                    pointRadius: 3,  // Dimensione dei punti
+                    pointHoverRadius: 3,  // Dimensione dei punti durante il passaggio del mouse
+                    pointHitRadius: 5,  // Distanza dal punto per il rilevamento del passaggio del mouse
                     pointBackgroundColor: 'rgba(75, 192, 192, 0.5)',
                     pointBorderColor: 'rgba(75, 192, 192, 1)',
-                    pointStyle: 'circle',
+                    pointStyle: 'circle',  // Puoi cambiare questo valore in 'triangle', 'rect', ecc.
                 }]
             },
             options: {
@@ -74,29 +75,34 @@
             }
         });
 
+        // Dimensione massima dell'array dei dati del grafico
         const maxSize = 100;
 
         // Gestisci gli eventi SSE ricevuti dal server
         eventSource.onmessage = function (event) {
             const data = JSON.parse(event.data);
 
+            // Aggiungi il dato X all'array dei dati del grafico
+            datiGrafico.unshift({
+                x: indiceTemporale,
+                y: data.z
+            });
+
+            // Incrementa l'indice temporale
+            indiceTemporale++;
+
+            // Limita la dimensione dell'array
+            if (datiGrafico.length > maxSize) {
+                datiGrafico.pop(); // Rimuovi il dato più vecchio
+            }
+
+            // Aggiorna il grafico
+            grafico.update();
+
             // Aggiorna i valori delle caselle con i dati ricevuti
             document.getElementById('x').value = data.x;
             document.getElementById('y').value = data.y;
             document.getElementById('z').value = data.z;
-
-            // Aggiungi il dato Z all'array dei dati del grafico
-            if (data.z !== undefined) {
-                datiZ.unshift(data.z);
-
-                // Limita la dimensione dell'array
-                if (datiZ.length > maxSize) {
-                    datiZ.pop(); // Rimuovi il dato più vecchio
-                }
-
-                // Aggiorna il grafico
-                grafico.update();
-            }
         };
 
         // Gestisci eventuali errori nella connessione SSE
