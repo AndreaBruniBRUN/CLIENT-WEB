@@ -40,38 +40,36 @@
 
         // Inizializza l'array per i dati del grafico
         const datiGrafico = [];
-
-        // Ottieni il tempo iniziale
-        const tempoIniziale = moment();
+        let indiceTemporale = 0;
 
         // Ottieni il riferimento all'elemento canvas del grafico
         const canvas = document.getElementById('grafico').getContext('2d');
 
         // Inizializza il grafico utilizzando Chart.js
         const grafico = new Chart(canvas, {
-    type: 'scatter',
-    data: {
-        datasets: [{
-            label: 'Dati',
-            data: datiGrafico,  // Usa i tuoi dati
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.5)',
-            pointRadius: 1,  // Dimensione dei punti
-            pointHoverRadius: 8,  // Dimensione dei punti durante il passaggio del mouse
-        }]
-    },
-    options: {
-        scales: {
-            x: {
-                type: 'linear',
-                position: 'bottom'
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Dati',
+                    data: datiGrafico,  // Usa i tuoi dati
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    pointRadius: 1,  // Dimensione dei punti
+                    pointHoverRadius: 1,  // Dimensione dei punti durante il passaggio del mouse
+                }]
             },
-            y: {
-                beginAtZero: false
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    },
+                    y: {
+                        beginAtZero: false
+                    }
+                }
             }
-        }
-    }
-});
+        });
 
         // Dimensione massima dell'array dei dati del grafico
         const maxSize = 100;
@@ -80,14 +78,14 @@
         eventSource.onmessage = function (event) {
             const data = JSON.parse(event.data);
 
-            // Calcola il tempo trascorso in millisecondi
-            const tempoTrascorso = moment().diff(tempoIniziale);
-
             // Aggiungi il dato X all'array dei dati del grafico
             datiGrafico.unshift({
-                x: tempoTrascorso,
+                x: indiceTemporale,
                 y: data.z
             });
+
+            // Incrementa l'indice temporale
+            indiceTemporale++;
 
             // Limita la dimensione dell'array
             if (datiGrafico.length > maxSize) {
@@ -111,3 +109,4 @@
 </body>
 
 </html>
+
