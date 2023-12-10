@@ -11,19 +11,14 @@
 
     <style>
         #grafico {
-            width: 100px; /* Larghezza fissa del canvas in pixel */
-            height: 50px; /* Altezza fissa del canvas in pixel */
+            width: 100%; /* Larghezza dinamica del canvas */
+            height: 300px; /* Altezza fissa del canvas in pixel */
         }
     </style>
-
-
-
-
-
 </head>
 
 <body>
-    <canvas id="grafico" width="100" height="50"></canvas>
+    <canvas id="grafico"></canvas>
     <h1>Dati Ricevuti in Streaming:</h1>
     <div>
         <label for="x">X:</label>
@@ -39,20 +34,12 @@
     </div>
 
     <script>
-        
-        
-        // Crea una connessione SSE al server
-        const indirizzoIPDelServer = '82.49.254.205';  //82.61.1.124  192.168.1.52
-        const eventSource = new EventSource(`https://${indirizzoIPDelServer}:443/index`); 
-        
-        //const eventSource = new EventSource(`https://client-web-odcm.vercel.app`);  noooo!!!!
-        
-        //const eventSource = new EventSource('/index'); // Connessione SSE
-        // Inizializza l'array per i dati del grafico
-        const datiGrafico = [];
+        const indirizzoIPDelServer = '82.49.254.205';
+        const eventSource = new EventSource(`https://${indirizzoIPDelServer}:443/index`);
 
-        // Ottieni il tempo iniziale
-        const tempoIniziale = moment();
+        // Inizializza l'array per i dati del grafico
+        const datiZ = [];
+        let indiceTemporale = 0;
 
         // Ottieni il riferimento all'elemento canvas del grafico
         const canvas = document.getElementById('grafico').getContext('2d');
@@ -61,51 +48,56 @@
         const grafico = new Chart(canvas, {
             type: 'line',
             data: {
-                labels: [],
                 datasets: [{
-                    label: 'X',
-                    data: datiGrafico,
+                    label: 'Dati',
+                    data: datiZ,
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1,
-                    fill: false
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    pointRadius: 1,
+                    pointHoverRadius: 1,
+                    pointHitRadius: 1,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    pointBorderColor: 'rgba(75, 192, 192, 1)',
+                    pointStyle: 'circle',
                 }]
             },
             options: {
                 scales: {
                     x: {
-                        type: 'linear', // Usa l'asse x come scala lineare
+                        type: 'linear',
                         position: 'bottom'
                     },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: false
                     }
                 }
             }
         });
 
+        const maxSize = 100;
 
         // Gestisci gli eventi SSE ricevuti dal server
         eventSource.onmessage = function (event) {
             const data = JSON.parse(event.data);
 
-            // Calcola il tempo trascorso in millisecondi
-            const tempoTrascorso = moment().diff(tempoIniziale);
-
-            // Aggiungi il dato X all'array dei dati del grafico
-            datiGrafico.push({
-                x: tempoTrascorso,
-                y: data.z
-            });
-
-            // Aggiorna il grafico
-            grafico.update();
-
             // Aggiorna i valori delle caselle con i dati ricevuti
             document.getElementById('x').value = data.x;
             document.getElementById('y').value = data.y;
             document.getElementById('z').value = data.z;
-        };
 
+            // Aggiungi il dato Z all'array dei dati del grafico
+            if (data.z !== undefined) {
+                datiZ.unshift(data.z);
+
+                // Limita la dimensione dell'array
+                if (datiZ.length > maxSize) {
+                    datiZ.pop(); // Rimuovi il dato più vecchio
+                }
+
+                // Aggiorna il grafico
+                grafico.update();
+            }
+        };
 
         // Gestisci eventuali errori nella connessione SSE
         eventSource.onerror = function (error) {
